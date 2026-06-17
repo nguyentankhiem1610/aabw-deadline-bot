@@ -18,8 +18,8 @@ export default function TimelineView({ deadlines, onEdit, onRefresh }: TimelineV
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <div className="text-4xl mb-3">📅</div>
-        <p className="text-gray-400 font-medium">No deadlines found</p>
-        <p className="text-gray-600 text-sm mt-1">
+        <p className="text-gray-600 font-medium">No deadlines found</p>
+        <p className="text-gray-500 text-sm mt-1">
           Add a team deadline or parse a schedule to get started.
         </p>
       </div>

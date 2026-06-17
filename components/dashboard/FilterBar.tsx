@@ -9,15 +9,15 @@ interface FilterBarProps {
   totalCounts: { all: number; global: number; team: number };
 }
 
-const TABS: { value: TimelineFilter; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "global", label: "Event" },
-  { value: "team", label: "Team" },
+const TABS: { value: TimelineFilter; label: string; emoji: string }[] = [
+  { value: "all", label: "All", emoji: "" },
+  { value: "global", label: "Event", emoji: "" },
+  { value: "team", label: "Team", emoji: "" },
 ];
 
 export default function FilterBar({ filter, onChange, totalCounts }: FilterBarProps) {
   return (
-    <div className="flex items-center gap-1 p-1 bg-gray-900 rounded-lg border border-gray-800 w-fit">
+    <div className="flex items-center gap-1.5">
       {TABS.map((tab) => {
         const count = totalCounts[tab.value];
         const isActive = filter === tab.value;
@@ -26,17 +26,18 @@ export default function FilterBar({ filter, onChange, totalCounts }: FilterBarPr
             key={tab.value}
             onClick={() => onChange(tab.value)}
             className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
+              "flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all border",
               isActive
-                ? "bg-gray-800 text-gray-100 shadow-sm"
-                : "text-gray-500 hover:text-gray-300 hover:bg-gray-800/50"
+                ? "bg-green-600 border-green-500 text-white"
+                : "bg-white border-gray-200 text-gray-600"
             )}
           >
+            <span className="text-base leading-none">{tab.emoji}</span>
             {tab.label}
             <span
               className={cn(
-                "text-xs tabular-nums",
-                isActive ? "text-gray-300" : "text-gray-600"
+                "text-xs tabular-nums px-1.5 py-0.5 rounded-full",
+                isActive ? "bg-white/20 text-white" : "bg-gray-100 text-gray-600"
               )}
             >
               {count}

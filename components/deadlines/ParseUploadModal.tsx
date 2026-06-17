@@ -150,9 +150,9 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && handleClose()}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg bg-white border border-gray-200 shadow-2xl shadow-black/10">
         <DialogHeader>
-          <DialogTitle>AI Schedule Parser</DialogTitle>
+          <DialogTitle className="text-gray-900">AI Schedule Parser</DialogTitle>
           <DialogDescription>
             Paste schedule text or upload an image — the AI will extract events for you.
           </DialogDescription>
@@ -160,8 +160,8 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
 
         {parseState === "done" ? (
           <div className="flex flex-col items-center py-8 gap-3">
-            <CheckCircle2 className="h-12 w-12 text-green-400" />
-            <p className="text-green-400 font-medium">
+            <CheckCircle2 className="h-12 w-12 text-green-600" />
+            <p className="text-green-600 font-medium">
               {selected.size} deadline{selected.size !== 1 ? "s" : ""} added!
             </p>
           </div>
@@ -170,7 +170,7 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
             {rawResponse && (
               <p className="text-xs text-gray-500 italic">{rawResponse}</p>
             )}
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-gray-700">
               Select the events to add ({selected.size}/{candidates.length} selected):
             </p>
             <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
@@ -185,12 +185,12 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
                     className={cn(
                       "w-full text-left rounded-lg border p-3 transition-all text-sm",
                       isSelected
-                        ? "border-blue-500/50 bg-blue-500/10"
-                        : "border-gray-800 bg-gray-900 opacity-60"
+                        ? "border-green-500/50 bg-green-50"
+                        : "border-gray-200 bg-white hover:border-gray-300"
                     )}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-medium text-gray-100 truncate">{c.title}</span>
+                      <span className="font-medium text-gray-900 truncate">{c.title}</span>
                       <span className={cn("text-xs shrink-0", meta.textColor)}>{meta.label}</span>
                     </div>
                     <div className="flex gap-3 mt-1 text-xs text-gray-500">
@@ -217,7 +217,7 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
         ) : (
           <div className="space-y-4 mt-2">
             {/* Tabs */}
-            <div className="flex gap-1 p-1 bg-gray-900 rounded-lg border border-gray-800 w-fit">
+            <div className="flex gap-1 p-1 bg-gray-100 rounded-lg border border-gray-200 w-fit">
               {(["text", "image"] as Tab[]).map((t) => (
                 <button
                   key={t}
@@ -226,8 +226,8 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
                   className={cn(
                     "px-3 py-1.5 rounded-md text-sm font-medium transition-all",
                     tab === t
-                      ? "bg-gray-800 text-gray-100"
-                      : "text-gray-500 hover:text-gray-300"
+                      ? "bg-white text-gray-900 shadow-sm"
+                      : "text-gray-500 hover:text-gray-900"
                   )}
                 >
                   {t === "text" ? "Paste Text" : "Upload Image"}
@@ -253,8 +253,8 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
                   className={cn(
                     "flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-8 cursor-pointer transition-colors",
                     imageFile
-                      ? "border-blue-500/50 bg-blue-500/5"
-                      : "border-gray-700 hover:border-gray-600"
+                      ? "border-green-500/50 bg-green-50"
+                      : "border-gray-300 hover:border-gray-400"
                   )}
                 >
                   {imagePreview ? (
@@ -282,9 +282,9 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
 
             {/* Error */}
             {errorMsg && (
-              <div className="flex items-start gap-2 rounded-lg bg-red-500/10 border border-red-500/20 p-3">
-                <XCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
-                <p className="text-sm text-red-400">{errorMsg}</p>
+              <div className="flex items-start gap-2 rounded-lg bg-red-50 border border-red-200 p-3">
+                <XCircle className="h-4 w-4 text-red-600 shrink-0 mt-0.5" />
+                <p className="text-sm text-red-600">{errorMsg}</p>
               </div>
             )}
 

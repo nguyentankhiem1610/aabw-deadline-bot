@@ -120,9 +120,9 @@ export default function DeadlineModal({ open, deadline, onClose, onSaved }: Dead
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md bg-white border border-gray-200 shadow-2xl shadow-black/10">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Deadline" : "Add Team Deadline"}</DialogTitle>
+          <DialogTitle className="text-gray-900">{isEdit ? "Edit Deadline" : "Add Team Deadline"}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
@@ -135,7 +135,7 @@ export default function DeadlineModal({ open, deadline, onClose, onSaved }: Dead
               onChange={(e) => set("title", e.target.value)}
               placeholder="e.g. Dry-run presentation"
             />
-            {errors.title && <p className="text-xs text-red-400">{errors.title}</p>}
+            {errors.title && <p className="text-xs text-red-600">{errors.title}</p>}
           </div>
 
           {/* Date + Time */}
@@ -148,7 +148,7 @@ export default function DeadlineModal({ open, deadline, onClose, onSaved }: Dead
                 value={values.date}
                 onChange={(e) => set("date", e.target.value)}
               />
-              {errors.date && <p className="text-xs text-red-400">{errors.date}</p>}
+              {errors.date && <p className="text-xs text-red-600">{errors.date}</p>}
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="time">Time *</Label>
@@ -158,7 +158,7 @@ export default function DeadlineModal({ open, deadline, onClose, onSaved }: Dead
                 value={values.time}
                 onChange={(e) => set("time", e.target.value)}
               />
-              {errors.time && <p className="text-xs text-red-400">{errors.time}</p>}
+              {errors.time && <p className="text-xs text-red-600">{errors.time}</p>}
             </div>
           </div>
 
@@ -214,10 +214,10 @@ export default function DeadlineModal({ open, deadline, onClose, onSaved }: Dead
           </div>
 
           <DialogFooter className="pt-2">
-            <Button type="button" variant="ghost" onClick={onClose}>
+            <Button type="button" variant="ghost" onClick={onClose} className="text-gray-500 hover:text-gray-900">
               Cancel
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button type="submit" disabled={saving} className="bg-green-600 hover:bg-green-700 border-0 text-white">
               {saving ? "Saving…" : isEdit ? "Save Changes" : "Add Deadline"}
             </Button>
           </DialogFooter>

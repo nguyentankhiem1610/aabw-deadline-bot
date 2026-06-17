@@ -13,32 +13,28 @@ interface DayGroupProps {
 }
 
 export default function DayGroup({ dayHeader, deadlines, onEdit, onRefresh }: DayGroupProps) {
-  const allPast = deadlines.every(
-    (d) => new Date(d.datetime) < new Date()
-  );
+  const allPast = deadlines.every((d) => new Date(d.datetime) < new Date());
 
   return (
     <div className="mb-8">
-      {/* Day Header */}
+      {/* Day header */}
       <div className="flex items-center gap-3 mb-4">
-        <div
+        <span
           className={cn(
-            "text-xs font-semibold uppercase tracking-wider px-2 py-1 rounded",
+            "text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border",
             allPast
-              ? "text-gray-600 bg-gray-900"
-              : "text-blue-400 bg-blue-500/10"
+              ? "text-gray-500 bg-transparent border-gray-200"
+              : "text-green-700"
           )}
         >
           {dayHeader}
-        </div>
-        <div className="flex-1 h-px bg-gray-800" />
+        </span>
+        <div className="flex-1 h-px bg-gray-200" />
       </div>
 
-      {/* Timeline items */}
+      {/* Items with vertical line */}
       <div className="relative pl-10">
-        {/* Vertical connector line */}
-        <div className="absolute left-[19px] top-3 bottom-3 w-px bg-gray-800" />
-
+        <div className="absolute left-[19px] top-3 bottom-3 w-px bg-gray-200" />
         <div className="space-y-3">
           {deadlines.map((deadline, idx) => (
             <TimelineItem

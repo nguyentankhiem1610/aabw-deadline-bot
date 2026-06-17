@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef, KeyboardEvent } from "react";
-import { Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Send, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ChatInputProps {
@@ -12,7 +11,6 @@ interface ChatInputProps {
 }
 
 export default function ChatInput({ input, onChange, onSubmit, isLoading }: ChatInputProps) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -22,7 +20,6 @@ export default function ChatInput({ input, onChange, onSubmit, isLoading }: Chat
     }
   };
 
-  // Auto-resize textarea
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e);
     const el = e.target;
@@ -31,32 +28,32 @@ export default function ChatInput({ input, onChange, onSubmit, isLoading }: Chat
   };
 
   return (
-    <div className="shrink-0 border-t border-gray-800 p-3">
-      <form ref={formRef} onSubmit={onSubmit} className="flex items-end gap-2">
-        <textarea
-          ref={textareaRef}
-          value={input}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          placeholder="Ask about deadlines… (Enter to send, Shift+Enter for new line)"
-          rows={1}
-          disabled={isLoading}
-          className={cn(
-            "flex-1 resize-none rounded-xl border border-gray-700 bg-gray-800 px-3 py-2.5 text-sm text-gray-100 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 max-h-[120px]"
-          )}
-        />
-        <Button
-          type="submit"
-          size="icon"
-          disabled={isLoading || !input.trim()}
-          className="h-10 w-10 shrink-0 rounded-xl"
-        >
-          <Send className="h-4 w-4" />
-        </Button>
+    <div className="shrink-0 border-t border-gray-200 bg-white p-3">
+      <form ref={formRef} onSubmit={onSubmit}>
+        <div className="flex items-end gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 focus-within:border-green-500 transition-colors">
+          <textarea
+            value={input}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            placeholder="Ask me anything about AABW 2026..."
+            rows={1}
+            disabled={isLoading}
+            className="flex-1 resize-none bg-transparent text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none disabled:opacity-50 max-h-[120px] py-1"
+          />
+          <button
+            type="submit"
+            disabled={isLoading || !input.trim()}
+            className={cn(
+              "flex h-8 w-8 items-center justify-center rounded-lg shrink-0 transition-all",
+              input.trim() && !isLoading
+                ? "bg-green-600 hover:bg-green-700 text-white"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            )}
+          >
+            <Send className="h-3.5 w-3.5" />
+          </button>
+        </div>
       </form>
-      <p className="mt-1 text-[11px] text-gray-600 text-center">
-        Shift+Enter for new line · Enter to send
-      </p>
     </div>
   );
 }

@@ -11,20 +11,20 @@ export default function CurrentTimeLine() {
   }, []);
 
   return (
-    <div className="relative flex items-center gap-3 my-4 pl-10">
-      {/* Pulsing dot on the timeline */}
-      <div className="absolute -left-[21px] flex h-4 w-4 items-center justify-center z-10">
-        <span className="absolute inline-flex h-4 w-4 rounded-full bg-blue-500 opacity-20 animate-ping" />
-        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-500" />
+    <div className="relative flex items-center gap-3 my-5 pl-10">
+      {/* Pulsing dot on the connector */}
+      <div className="absolute -left-[21px] flex h-5 w-5 items-center justify-center z-10">
+        <span className="absolute inline-flex h-5 w-5 rounded-full bg-green-500 opacity-20 animate-ping" />
+        <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500 shadow-lg shadow-green-500/50" />
       </div>
 
       {/* Line + label */}
       <div className="flex-1 flex items-center gap-3">
-        <div className="flex-1 h-px bg-blue-500/40" />
-        <span className="text-xs font-semibold text-blue-400 shrink-0 bg-blue-500/10 border border-blue-500/20 rounded-full px-2 py-0.5">
+        <div className="flex-1 h-px bg-gradient-to-r from-green-500/60 to-transparent" />
+        <span className="text-[11px] font-bold text-green-700 shrink-0 px-3 py-1">
           NOW · {format(now, "h:mm a")}
         </span>
-        <div className="flex-1 h-px bg-blue-500/40" />
+        <div className="flex-1 h-px bg-gradient-to-l from-green-500/60 to-transparent" />
       </div>
     </div>
   );

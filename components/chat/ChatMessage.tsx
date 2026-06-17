@@ -12,23 +12,20 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
 
   return (
-    <div
-      className={cn(
-        "flex gap-2 items-start",
-        isUser ? "flex-row-reverse" : "flex-row"
-      )}
-    >
+    <div className={cn("flex gap-2 items-end", isUser ? "flex-row-reverse" : "flex-row")}>
       {/* Avatar */}
       <div
         className={cn(
-          "flex h-7 w-7 items-center justify-center rounded-full shrink-0 mt-0.5",
-          isUser ? "bg-gray-700" : "bg-blue-600"
+          "flex h-7 w-7 items-center justify-center rounded-xl shrink-0",
+          isUser
+            ? "bg-gray-200"
+            : "bg-gradient-to-br from-green-500 to-emerald-600"
         )}
       >
         {isUser ? (
-          <User className="h-4 w-4 text-gray-300" />
+          <User className="h-3.5 w-3.5 text-gray-600" />
         ) : (
-          <Bot className="h-4 w-4 text-white" />
+          <Bot className="h-3.5 w-3.5 text-white" />
         )}
       </div>
 
@@ -37,14 +34,14 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         className={cn(
           "max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
           isUser
-            ? "rounded-tr-sm bg-blue-600 text-white"
-            : "rounded-tl-sm bg-gray-800 text-gray-100"
+            ? "rounded-br-sm bg-green-600 text-white shadow-lg shadow-green-600/20"
+            : "rounded-bl-sm bg-gray-100 border border-gray-200 text-gray-900"
         )}
       >
-        {message.content.split("\n").map((line, i) => (
+        {message.content.split("\n").map((line, i, arr) => (
           <React.Fragment key={i}>
             {line}
-            {i < message.content.split("\n").length - 1 && <br />}
+            {i < arr.length - 1 && <br />}
           </React.Fragment>
         ))}
       </div>
