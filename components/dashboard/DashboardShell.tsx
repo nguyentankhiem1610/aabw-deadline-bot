@@ -65,7 +65,7 @@ export default function DashboardShell() {
 
     const container = document.getElementById("scrollable-container");
     if (container) container.addEventListener("scroll", handleScroll);
-    
+
     return () => {
       if (container) container.removeEventListener("scroll", handleScroll);
     };
@@ -199,12 +199,16 @@ export default function DashboardShell() {
           onScroll={(e) => setShowScrollTop(e.currentTarget.scrollTop > 300)}
         >
 
-          {/* ── HERO BANNER ── */}
-          <div className="relative overflow-hidden bg-gradient-to-r from-green-50 via-white to-green-50 border-b border-gray-200 px-6 py-8">
-            {/* Background glow blobs */}
-            <div className="absolute -top-16 -left-16 h-64 w-64 rounded-full bg-green-600/10 blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-16 right-32 h-64 w-64 rounded-full bg-emerald-600/10 blur-3xl pointer-events-none" />
+          <div className="w-full bg-black border-b border-gray-800">
+            <img
+              src="/assets/images/header/full_width.png"
+              alt="AABW Sponsors and Partners"
+              className="w-full h-auto max-h-[140px] object-cover sm:object-contain object-center"
+            />
+          </div>
 
+          {/* ── HERO BANNER ── */}
+          <div className="relative overflow-hidden bg-white border-b border-gray-200 px-6 py-8">
             <div className="relative max-w-4xl">
               <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
                 Your 5-Day Hackathon<br />

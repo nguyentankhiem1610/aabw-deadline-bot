@@ -42,7 +42,6 @@ export default function AlertTray({ notifications, onDismiss, unreadCount }: Ale
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
             <div className="flex items-center gap-2">
-              <Bell className="h-3.5 w-3.5 text-gray-500" />
               <p className="text-sm font-semibold text-gray-900">Upcoming Alerts</p>
               {unreadCount > 0 && (
                 <span className="text-xs bg-red-500/20 text-red-400 border border-red-500/20 rounded-full px-1.5 py-0.5 font-medium">
@@ -64,7 +63,6 @@ export default function AlertTray({ notifications, onDismiss, unreadCount }: Ale
           <div className="max-h-80 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
-                <Bell className="h-8 w-8 text-gray-400 mb-2" />
                 <p className="text-sm text-gray-600">No alerts</p>
                 <p className="text-xs text-gray-500 mt-1">
                   You&apos;ll be notified 15 &amp; 30 min before deadlines

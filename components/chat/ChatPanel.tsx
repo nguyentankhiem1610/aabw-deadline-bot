@@ -35,8 +35,8 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
         {/* Header */}
         <div className="relative overflow-hidden shrink-0">
           {/* Gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-green-100 via-white to-white" />
-          <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-green-500/10 blur-2xl" />
+          <div className="absolute inset-0 bg-white" />
+          {/* <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-green-500/10 blur-2xl" /> */}
 
           <div className="relative flex items-center justify-between px-4 py-3.5 border-b border-gray-200">
             <div className="flex items-center gap-3">
