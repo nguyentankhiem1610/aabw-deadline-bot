@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { getDeadlines, updateDeadline, deleteDeadline } from "@/lib/db";
 import type { DeadlineCategory } from "@/lib/types";
 
 const VALID_CATEGORIES: DeadlineCategory[] = [
@@ -11,17 +11,14 @@ interface RouteContext {
 }
 
 export async function PUT(request: NextRequest, { params }: RouteContext) {
-  try {
     const { id } = params;
     const body = await request.json();
-    const db = await getDb();
-
-    const index = db.data.deadlines.findIndex((d) => d.id === id);
-    if (index === -1) {
+    
+    const deadlines = await getDeadlines();
+    const existing = deadlines.find((d) => d.id === id);
+    if (!existing) {
       return NextResponse.json({ error: "Deadline not found" }, { status: 404 });
     }
-
-    const existing = db.data.deadlines[index];
 
     // Validate fields if provided
     if (body.title !== undefined && !body.title?.trim()) {
@@ -42,8 +39,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
     const newTime = body.time ?? existing.time;
     const newDatetime = `${newDate}T${newTime}:00+07:00`;
 
-    const updated = {
-      ...existing,
+    const updates = {
       title: body.title?.trim() ?? existing.title,
       date: newDate,
       time: newTime,
@@ -55,8 +51,10 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
       updatedAt: new Date().toISOString(),
     };
 
-    db.data.deadlines[index] = updated;
-    await db.write();
+    const updated = await updateDeadline(id, updates);
+    if (!updated) {
+      throw new Error("Failed to update deadline in Supabase");
+    }
 
     return NextResponse.json({ deadline: updated });
   } catch (error) {
@@ -68,15 +66,11 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
 export async function DELETE(_request: NextRequest, { params }: RouteContext) {
   try {
     const { id } = params;
-    const db = await getDb();
+    const success = await deleteDeadline(id);
 
-    const index = db.data.deadlines.findIndex((d) => d.id === id);
-    if (index === -1) {
-      return NextResponse.json({ error: "Deadline not found" }, { status: 404 });
+    if (!success) {
+      return NextResponse.json({ error: "Deadline not found or delete failed" }, { status: 404 });
     }
-
-    db.data.deadlines.splice(index, 1);
-    await db.write();
 
     return NextResponse.json({ success: true });
   } catch (error) {

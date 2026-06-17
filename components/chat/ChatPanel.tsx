@@ -40,14 +40,6 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
 
           <div className="relative flex items-center justify-between px-4 py-3.5 border-b border-gray-200">
             <div className="flex items-center gap-3">
-              <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-500/25">
-                <Bot className="h-5 w-5 text-white" />
-                {/* Pulse dot */}
-                <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-40" />
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 border-2 border-white" />
-                </span>
-              </div>
               <div>
                 <p className="text-sm font-bold text-gray-900">AI Assistant</p>
               </div>

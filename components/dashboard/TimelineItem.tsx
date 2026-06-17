@@ -52,7 +52,7 @@ export default function TimelineItem({ deadline, onEdit, onRefresh }: TimelineIt
       )}
     >
       {/* Colored left border accent */}
-      <div className={cn("absolute left-0 top-0 bottom-0 w-0.5 rounded-l-xl", isPast ? "bg-gray-300" : dot)} />
+      {/* <div className={cn("absolute left-0 top-0 bottom-0 w-0.5 rounded-l-xl", isPast ? "bg-gray-300" : dot)} /> */}
 
       {/* Timeline dot on the connector line */}
       <div className="absolute -left-[29px] top-[18px] flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-white z-10">

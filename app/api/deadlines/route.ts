@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import { getDb } from "@/lib/db";
+import { getDeadlines, createDeadline } from "@/lib/db";
 import { sortDeadlines } from "@/lib/utils";
 import type { Deadline, DeadlineFormInput, DeadlineCategory } from "@/lib/types";
 
@@ -10,8 +10,8 @@ const VALID_CATEGORIES: DeadlineCategory[] = [
 
 export async function GET() {
   try {
-    const db = await getDb();
-    const deadlines = sortDeadlines(db.data.deadlines);
+    const data = await getDeadlines();
+    const deadlines = sortDeadlines(data);
     return NextResponse.json({ deadlines });
   } catch (error) {
     console.error("[GET /api/deadlines]", error);
@@ -56,11 +56,12 @@ export async function POST(request: NextRequest) {
       updatedAt: now,
     };
 
-    const db = await getDb();
-    db.data.deadlines.push(newDeadline);
-    await db.write();
+    const created = await createDeadline(newDeadline);
+    if (!created) {
+      throw new Error("Failed to insert into Supabase");
+    }
 
-    return NextResponse.json({ deadline: newDeadline }, { status: 201 });
+    return NextResponse.json({ deadline: created }, { status: 201 });
   } catch (error) {
     console.error("[POST /api/deadlines]", error);
     return NextResponse.json({ error: "Failed to create deadline" }, { status: 500 });

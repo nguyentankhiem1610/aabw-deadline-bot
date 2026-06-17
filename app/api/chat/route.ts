@@ -3,7 +3,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { generateText, tool, StreamingTextResponse, OpenAIStream } from "ai";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { getDb } from "@/lib/db";
+import { getDeadlines, createDeadline, deleteDeadline } from "@/lib/db";
 import { sortDeadlines, getNextDeadline, formatTime } from "@/lib/utils";
 import type { DeadlineCategory, Deadline } from "@/lib/types";
 
@@ -35,8 +35,8 @@ const TOOLS = {
       upcomingOnly: z.boolean().optional(),
     }),
     execute: async ({ date, category, type, upcomingOnly }) => {
-      const db = await getDb();
-      let deadlines = sortDeadlines(db.data.deadlines);
+      const dbDeadlines = await getDeadlines();
+      let deadlines = sortDeadlines(dbDeadlines);
       if (date) deadlines = deadlines.filter((d) => d.date === date);
       if (category) deadlines = deadlines.filter((d) => d.category === category);
       if (type) deadlines = deadlines.filter((d) => d.type === type);
@@ -67,8 +67,8 @@ const TOOLS = {
       _dummy: z.string().optional()
     }),
     execute: async () => {
-      const db = await getDb();
-      const next = getNextDeadline(db.data.deadlines);
+      const dbDeadlines = await getDeadlines();
+      const next = getNextDeadline(dbDeadlines);
       if (!next) return { found: false, message: "No upcoming deadlines." };
       return {
         found: true,
@@ -115,18 +115,19 @@ const TOOLS = {
         createdAt: now,
         updatedAt: now,
       };
-      const db = await getDb();
-      db.data.deadlines.push(newDeadline);
-      await db.write();
+      const created = await createDeadline(newDeadline);
+      if (!created) {
+        return { success: false, error: "Failed to create deadline in Supabase" };
+      }
       return {
         success: true,
         deadline: {
-          id: newDeadline.id,
-          title: newDeadline.title,
-          date: newDeadline.date,
-          time: formatTime(newDeadline.time),
-          category: newDeadline.category,
-          location: newDeadline.location ?? null,
+          id: created.id,
+          title: created.title,
+          date: created.date,
+          time: formatTime(created.time),
+          category: created.category,
+          location: created.location ?? null,
         },
       };
     },
@@ -140,17 +141,19 @@ const TOOLS = {
       title: z.string().optional().describe("Partial match, case-insensitive"),
     }),
     execute: async ({ id, title }) => {
-      const db = await getDb();
+      const dbDeadlines = await getDeadlines();
       let target: Deadline | undefined;
-      if (id) target = db.data.deadlines.find((d) => d.id === id && d.type === "team");
+      if (id) target = dbDeadlines.find((d) => d.id === id && d.type === "team");
       else if (title)
-        target = db.data.deadlines.find(
+        target = dbDeadlines.find(
           (d) => d.type === "team" && d.title.toLowerCase().includes(title.toLowerCase())
         );
       if (!target)
         return { success: false, error: `No team deadline found matching: "${id ?? title}"` };
-      db.data.deadlines = db.data.deadlines.filter((d) => d.id !== target!.id);
-      await db.write();
+      const success = await deleteDeadline(target.id);
+      if (!success) {
+        return { success: false, error: "Failed to delete deadline from Supabase" };
+      }
       return { success: true, deleted: { id: target.id, title: target.title } };
     },
   }),

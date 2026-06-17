@@ -154,7 +154,7 @@ export default function ParseUploadModal({ open, onClose, onSaved }: ParseUpload
         <DialogHeader>
           <DialogTitle className="text-gray-900">AI Schedule Parser</DialogTitle>
           <DialogDescription>
-            Paste schedule text or upload an image — the AI will extract events for you.
+            Paste schedule text or upload an image - the AI will extract events for you.
           </DialogDescription>
         </DialogHeader>
 

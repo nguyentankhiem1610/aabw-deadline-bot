@@ -43,6 +43,27 @@ GROQ_API_KEY=gsk_your_key_here
 AI_MODEL=llama-3.1-8b-instant
 ```
 
+### X. Run code SQL
+```sql
+
+CREATE TABLE IF NOT EXISTS public.deadlines (
+  id UUID PRIMARY KEY,
+  title TEXT NOT NULL,
+  date TEXT NOT NULL,
+  time TEXT NOT NULL,
+  datetime TEXT NOT NULL,
+  category TEXT NOT NULL,
+  location TEXT,
+  description TEXT,
+  type TEXT NOT NULL,
+  "teamName" TEXT,
+  "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.deadlines DISABLE ROW LEVEL SECURITY;
+```
+
 ### 3. Run the dev server
 
 ```bash

@@ -59,28 +59,24 @@ export default function DashboardShell() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
       const containerScroll = document.getElementById("scrollable-container")?.scrollTop || 0;
-      setShowScrollTop(scrollY > 300 || containerScroll > 300);
+      setShowScrollTop(containerScroll > 300);
     };
 
-    window.addEventListener("scroll", handleScroll);
     const container = document.getElementById("scrollable-container");
     if (container) container.addEventListener("scroll", handleScroll);
-
+    
     return () => {
-      window.removeEventListener("scroll", handleScroll);
       if (container) container.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
     document.getElementById("scrollable-container")?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-900">
+    <div className="flex h-screen overflow-hidden bg-gray-50 text-gray-900">
       {/* ── Notification Poller (invisible) ── */}
       <NotificationPoller deadlines={deadlines ?? []} onNotification={addNotification} />
 
@@ -104,8 +100,12 @@ export default function DashboardShell() {
       >
         {/* Sidebar header */}
         <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 shrink-0">
-            <Calendar className="h-4 w-4 text-white" />
+          <div className="flex h-9 w-9 items-center justify-center shrink-0 rounded-lg overflow-hidden bg-white/5">
+            <img
+              src="/assets/images/header/og-image.png"
+              alt="AABW 2026 Logo"
+              className="h-full w-full object-contain"
+            />
           </div>
           <div className="min-w-0">
             <p className="text-sm font-bold text-gray-900 truncate">AABW 2026</p>
@@ -154,8 +154,12 @@ export default function DashboardShell() {
 
           {/* Mobile logo */}
           <div className="flex items-center gap-2 lg:hidden">
-            <div className="h-6 w-6 rounded bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-              <Calendar className="h-3.5 w-3.5 text-white" />
+            <div className="flex h-9 w-9 items-center justify-center shrink-0 rounded-lg overflow-hidden bg-white/5">
+              <img
+                src="/assets/images/header/og-image.png"
+                alt="AABW 2026 Logo"
+                className="h-full w-full object-contain"
+              />
             </div>
             <span className="text-sm font-bold text-gray-900">AABW 2026</span>
           </div>

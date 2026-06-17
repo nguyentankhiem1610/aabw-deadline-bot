@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { buildNotificationKey } from "@/lib/utils";
 import type { AppNotification, Deadline } from "@/lib/types";
@@ -15,14 +15,33 @@ export function useNotifications(): UseNotificationsReturn {
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   // Session-scoped dedup set — persists for the lifetime of the component
   const issuedKeys = useRef<Set<string>>(new Set());
+  const dismissedKeys = useRef<Set<string>>(new Set());
+
+  // Hydrate dismissed alerts from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem("aabw_dismissed_alerts");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            dismissedKeys.current = new Set(parsed);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to load dismissed alerts", e);
+      }
+    }
+  }, []);
 
   const isIssued = useCallback((deadlineId: string, window: 15 | 30): boolean => {
-    return issuedKeys.current.has(buildNotificationKey(deadlineId, window));
+    const key = buildNotificationKey(deadlineId, window);
+    return issuedKeys.current.has(key) || dismissedKeys.current.has(key);
   }, []);
 
   const addNotification = useCallback((deadline: Deadline, window: 15 | 30) => {
     const key = buildNotificationKey(deadline.id, window);
-    if (issuedKeys.current.has(key)) return; // dedup guard
+    if (issuedKeys.current.has(key) || dismissedKeys.current.has(key)) return; // dedup guard
 
     issuedKeys.current.add(key);
 
@@ -57,10 +76,21 @@ export function useNotifications(): UseNotificationsReturn {
   }, []);
 
   const dismissNotification = useCallback((id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-        .filter((n) => n.id !== id)
-    );
+    setNotifications((prev) => {
+      const target = prev.find((n) => n.id === id);
+      if (target) {
+        const key = buildNotificationKey(target.deadlineId, target.proximityWindow);
+        dismissedKeys.current.add(key);
+        if (typeof window !== "undefined") {
+          try {
+            localStorage.setItem("aabw_dismissed_alerts", JSON.stringify(Array.from(dismissedKeys.current)));
+          } catch (e) {
+            console.error("Failed to save dismissed alerts", e);
+          }
+        }
+      }
+      return prev.filter((n) => n.id !== id);
+    });
   }, []);
 
   return { notifications, addNotification, dismissNotification, isIssued };
