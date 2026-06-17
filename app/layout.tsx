@@ -11,8 +11,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "AABW Smart Deadline Tracker",
   description:
-    "AI-powered deadline tracking and reminder bot for Agentic AI Build Week 2026 — Jul 8–12, Ho Chi Minh City",
+    "AI-powered deadline tracking and reminder bot for Agentic AI Build Week 2026 - Jul 8-12, Ho Chi Minh City",
   keywords: ["AABW", "hackathon", "deadline tracker", "AI", "Build Week 2026"],
+  icons: {
+    icon: "/assets/images/favicon/favicon-2.png",
+  },
 };
 
 export default function RootLayout({
